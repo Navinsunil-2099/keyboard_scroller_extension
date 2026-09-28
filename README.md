@@ -1,6 +1,8 @@
-# ScrollKey - 'U' & 'I' Keyboard Scroller & Tab Switcher
+# ScrollKey 🚀
 
-A high-performance cross-browser extension for **Chromium-based** (Google Chrome, Brave, Microsoft Edge, Opera, Vivaldi) and **Firefox-based** (Mozilla Firefox, Firefox Developer Edition, LibreWolf) browsers.
+> **Effortless keyboard scrolling and instant tab switching for Chromium and Firefox browsers.**
+
+ScrollKey lets you glide through web pages using **`U`** (scroll down) and **`I`** (scroll up) with a custom kinetic physics engine that feels just like a precision touchpad or physical mouse wheel. It also includes fast tab navigation with **`Alt + U`** and **`Alt + I`**, all while keeping your typing 100% protected in text fields and code editors.
 
 ---
 
@@ -8,95 +10,109 @@ A high-performance cross-browser extension for **Chromium-based** (Google Chrome
 
 | Shortcut | Action | Description |
 | :--- | :--- | :--- |
-| **`U`** | **Scroll Down** | Smoothly scrolls down the current page or hovered panel. |
-| **`I`** | **Scroll Up** | Smoothly scrolls up the current page or hovered panel. |
-| **`Alt + U`** | **Tab Left** | Switches immediately to the previous tab on the left (cycles around). |
-| **`Alt + I`** | **Tab Right** | Switches immediately to the next tab on the right (cycles around). |
-| **`Shift + U`** | **Fast Scroll Down** | 2.5x turbo-boosted downward scroll. |
-| **`Shift + I`** | **Fast Scroll Up** | 2.5x turbo-boosted upward scroll. |
+| **`U`** | **Scroll Down** | Glides down the current page or hovered panel with kinetic momentum. |
+| **`I`** | **Scroll Up** | Glides up the current page or hovered panel with kinetic momentum. |
+| **`Alt + U`** | **Previous Tab (Left)** | Instantly cycles to the tab on the left. |
+| **`Alt + I`** | **Next Tab (Right)** | Instantly cycles to the tab on the right. |
+| **`Shift + U`** | **Turbo Scroll Down** | 2.5× accelerated downward scroll. |
+| **`Shift + I`** | **Turbo Scroll Up** | 2.5× accelerated upward scroll. |
 
 ---
 
-## 🛡️ Typing Safety & Smart Features
+## ✨ Features
 
-- **Safe Typing Protection**: Intelligently detects `<input>`, `<textarea>`, `<select>`, `[contenteditable]`, code editors (Monaco, CodeMirror, ACE), rich-text editors (Notion, Google Docs, ProseMirror), and ARIA search/textboxes so you never accidentally scroll when typing words containing 'u' or 'i'.
-- **System Shortcut Preservation**: Standard browser shortcuts like `Ctrl + U` (View Page Source) and `Ctrl + I` (Page Info / Italic) are never hijacked.
-- **Global Tab Switching**: `Alt + U` and `Alt + I` switch tabs globally — even when your cursor is inside a text box or editor.
-- **Hold-to-Scroll Optimization**: Holding down `U` or `I` scrolls continuously and halts instantly upon key release with zero animation backlog.
-- **Smart Hover Targeting**: If your mouse cursor is hovering over a scrollable sidebar, modal, or comment list, the extension scrolls that specific panel instead of the whole page.
-- **Per-Site Exclusion List**: Easily exclude specific websites with one click from the popup.
-- **Live Interactive Test Pad**: Test your scrolling directly inside the extension popup settings window.
+- **🌊 Kinetic Physics Engine**: Built on `requestAnimationFrame` with sub-pixel precision accumulator and exponential friction decay. Eliminates choppy OS repeat stutter and matches your monitor's native refresh rate (60Hz, 120Hz, 144Hz+).
+- **🛡️ Smart Typing Safety**: Intelligently disables single-key scrolling when you are typing in:
+  - `<input>`, `<textarea>`, `<select>`
+  - `[contenteditable]` elements (Notion, Google Docs, Medium, etc.)
+  - Code editors (Monaco / VS Code web, CodeMirror, ACE)
+  - ARIA textboxes and search fields
+- **🌐 Global Tab Navigation**: `Alt + U` and `Alt + I` switch tabs anywhere across your browser—even if focus is inside a form or code editor.
+- **🎯 Smart Hover Targeting**: Hovering your mouse over an overflow container (such as a sidebar, code block, or comments feed) scrolls that specific element instead of the main page.
+- **⚙️ Full Customization Popup**:
+  - Adjust scroll step distance (40px – 300px).
+  - Remap keys to any character of your choice.
+  - Toggle smooth motion vs instant jumps.
+  - One-click site exclusion list (blacklist).
+  - Built-in interactive test pad to preview settings in real time.
+- **🔒 100% Private**: No analytics, no tracking, no external network requests. All preferences are stored locally in your browser.
 
 ---
 
-## 🚀 How to Install & Load the Extension
+## 📦 Installation Guide
 
-### For Chromium-Based Browsers (Chrome, Edge, Brave, Opera, Vivaldi)
+### Option 1: Load in Chromium Browsers (Google Chrome, Brave, Edge, Opera, Vivaldi)
 
-1. Open your browser and navigate to:
-   - **Chrome**: `chrome://extensions/`
-   - **Brave**: `brave://extensions/`
-   - **Edge**: `edge://extensions/`
-2. Turn ON the **Developer mode** toggle in the top-right corner.
-3. Click the **"Load unpacked"** button.
-4. Select the extension directory:
-   ```text
-   /home/navin/keyboardScrollExtension
+1. Download or clone this repository to your computer:
+   ```bash
+   git clone https://github.com/Navinsunil-2099/keyboard_scroller_extension.git
    ```
-5. Pin the **ScrollKey** icon to your toolbar for quick access to settings and site exclusions!
+   *(Or download and extract the repository ZIP file).*
+2. Open your browser and navigate to the Extensions page:
+   - **Chrome**: `chrome://extensions`
+   - **Brave**: `brave://extensions`
+   - **Edge**: `edge://extensions`
+3. Toggle **Developer mode** on (usually located in the top-right corner).
+4. Click **"Load unpacked"**.
+5. Select the extension folder (the directory containing `manifest.json`).
+6. Pin **ScrollKey** to your browser toolbar for easy access to settings!
 
 ---
 
-### For Firefox-Based Browsers (Firefox, LibreWolf, Developer Edition)
+### Option 2: Load in Firefox Browsers (Mozilla Firefox, LibreWolf, Floorp)
 
-1. Open Firefox and go to:
+1. Download or clone this repository to your computer.
+2. Open Firefox and enter in the address bar:
    ```text
    about:debugging#/runtime/this-firefox
    ```
-2. Under the **Temporary Extensions** section, click **"Load Temporary Add-on..."**.
-3. Select the `manifest.json` file inside:
-   ```text
-   /home/navin/keyboardScrollExtension/manifest.json
-   ```
-4. The extension will load immediately with Manifest V3 support.
+3. Under the **Temporary Extensions** section, click **"Load Temporary Add-on..."**.
+4. Select the `manifest.json` file inside the extension folder.
+5. The extension will activate immediately with full Manifest V3 compatibility.
 
 ---
 
-## ⚙️ Customization via Extension Popup
+## 🎛️ Extension Settings
 
-Click the **ScrollKey** extension icon in your browser toolbar to configure:
-- **Master Switch**: Enable or disable the extension globally.
-- **Tab Navigation**: Toggle `Alt + U` and `Alt + I` tab switching on or off.
-- **Key Remapping**: Click the `[ I ]` or `[ U ]` keycaps to assign any custom key.
-- **Scroll Step Slider**: Customize the scroll distance per keypress (40px &ndash; 300px).
-- **Smooth Motion**: Toggle between smooth animated scroll and instant jumps.
-- **Shift Boost**: Enable/disable turbo speed when holding `Shift`.
-- **Hover Targeting**: Choose between cursor-hovered element scrolling vs whole page.
-- **On-Screen HUD**: Optional subtle visual feedback arrow on scroll.
-- **Excluded Sites**: Add/remove domains from your blacklist.
+Click the **ScrollKey** icon in your browser toolbar to open the settings panel:
+
+- **Master Switch**: Toggle the extension on or off globally.
+- **Scroll Step Slider**: Customize how far the page moves per keypress.
+- **Smooth Motion**: Switch between fluid kinetic scrolling and instant stepping.
+- **Shift Boost**: Enable or disable 2.5× fast scroll when holding `Shift`.
+- **Hover Targeting**: Choose whether to scroll panels under the mouse or stick to the main document.
+- **Key Remapping**: Click on the `[ I ]` or `[ U ]` keycaps in the popup to record your own custom keys.
+- **Site Exclusions**: Click **"Exclude Site"** to disable keyboard scrolling on the current domain.
+- **Interactive Test Pad**: Test your keybindings and scroll physics right inside the popup!
 
 ---
 
-## 📁 Extension File Structure
+## 📁 Repository Structure
 
 ```text
-keyboardScrollExtension/
-├── manifest.json              # Cross-browser Manifest V3 configuration
+keyboard_scroller_extension/
+├── manifest.json              # Dual Manifest V3 config (Chromium & Firefox)
 ├── background/
-│   └── background.js          # Service worker for Alt+U / Alt+I tab switching
+│   └── background.js          # Service worker & background script for tab switching
 ├── content/
-│   ├── content.js             # High-performance keydown listener & scroll engine
+│   ├── content.js             # Kinetic physics scroll engine & typing filter
 │   └── content.css            # Optional on-screen HUD styling
 ├── popup/
-│   ├── popup.html             # Modern dark-mode settings popup
-│   ├── popup.css              # Glassmorphic UI styling
-│   └── popup.js               # Settings manager, key recorder & live test pad
+│   ├── popup.html             # Glassmorphic settings popup interface
+│   ├── popup.css              # Dark-mode design system
+│   └── popup.js               # Settings controller & live test pad
 ├── icons/
-│   ├── icon-16.png            # 16x16 icon
+│   ├── icon-16.png            # 16x16 toolbar icon
 │   ├── icon-32.png            # 32x32 icon
 │   ├── icon-48.png            # 48x48 icon
-│   ├── icon-128.png           # 128x128 icon
-│   ├── icon.svg               # Vector SVG logo
-│   └── generate_icons.py      # Icon generation script
-└── README.md                  # Documentation and user manual
+│   ├── icon-128.png           # 128x128 store/management icon
+│   └── icon.svg               # Scalable vector logo
+├── .gitignore                 # Standard repository ignores
+└── README.md                  # Project documentation
 ```
+
+---
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
