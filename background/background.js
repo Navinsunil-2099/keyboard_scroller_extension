@@ -1,5 +1,5 @@
 /**
- * ScrollKey - Background Service Worker
+ * Scrollith - Background Service Worker
  * Handles tab switching commands (Alt+U for left tab, Alt+I for right tab)
  * and coordinates extension actions across windows and tabs.
  */

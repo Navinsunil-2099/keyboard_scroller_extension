@@ -1,5 +1,5 @@
 /**
- * ScrollKey - Popup Logic
+ * Scrollith - Popup Logic
  * Handles user settings, storage synchronization, key recording,
  * tab switching toggle, site exclusions, and interactive test area.
  */

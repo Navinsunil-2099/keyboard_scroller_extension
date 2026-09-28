@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "ScrollKey - 'U' & 'I' Keyboard Scroller & Tab Switcher",
-  "short_name": "ScrollKey",
+  "name": "Scrollith - 'U' & 'I' Keyboard Scroller & Tab Switcher",
+  "short_name": "Scrollith",
   "version": "1.1.0",
   "description": "Scroll web pages with 'U' (down) & 'I' (up), and switch browser tabs with Alt+U (left) & Alt+I (right).",
   "permissions": [
@@ -13,7 +13,7 @@
     "scripts": ["background/background.js"]
   },
   "action": {
-    "default_title": "ScrollKey Settings",
+    "default_title": "Scrollith Settings",
     "default_popup": "popup/popup.html",
     "default_icon": {
       "16": "icons/icon-16.png",
@@ -53,7 +53,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "scrollkey-extension@antigravity.local",
+      "id": "scrollith-extension@antigravity.local",
       "strict_min_version": "109.0"
     }
   }

@@ -1,5 +1,5 @@
 /**
- * ScrollKey - Content Script
+ * Scrollith - Content Script
  * High-precision kinetic physics engine for buttery smooth scrolling,
  * context awareness, smart container targeting, and Alt+U / Alt+I tab switching.
  */
@@ -384,7 +384,7 @@
 
     if (!hudElement) {
       hudElement = document.createElement('div');
-      hudElement.id = 'scrollkey-hud';
+      hudElement.id = 'scrollith-hud';
       document.body.appendChild(hudElement);
     }
 
@@ -393,14 +393,14 @@
       : '<svg viewBox="0 0 24 24"><path d="M12 20l8-8h-6v-8h-4v8h-6z"/></svg>';
 
     hudElement.innerHTML = `
-      <span class="scrollkey-icon">${arrowSvg}</span>
+      <span class="scrollith-icon">${arrowSvg}</span>
       <span>Scroll ${dirText}</span>
     `;
-    hudElement.classList.add('scrollkey-visible');
+    hudElement.classList.add('scrollith-visible');
 
     if (hudTimeout) clearTimeout(hudTimeout);
     hudTimeout = setTimeout(() => {
-      if (hudElement) hudElement.classList.remove('scrollkey-visible');
+      if (hudElement) hudElement.classList.remove('scrollith-visible');
     }, 500);
   }
 

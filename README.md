@@ -1,8 +1,8 @@
-# ScrollKey 🚀
+# Scrollith 🚀
 
 > **Effortless keyboard scrolling and instant tab switching for Chromium and Firefox browsers.**
 
-ScrollKey lets you glide through web pages using **`U`** (scroll down) and **`I`** (scroll up) with a custom kinetic physics engine that feels just like a precision touchpad or physical mouse wheel. It also includes fast tab navigation with **`Alt + U`** and **`Alt + I`**, all while keeping your typing 100% protected in text fields and code editors.
+Scrollith lets you glide through web pages using **`U`** (scroll down) and **`I`** (scroll up) with a custom kinetic physics engine that feels just like a precision touchpad or physical mouse wheel. It also includes fast tab navigation with **`Alt + U`** and **`Alt + I`**, all while keeping your typing 100% protected in text fields and code editors.
 
 ---
 
@@ -55,7 +55,7 @@ ScrollKey lets you glide through web pages using **`U`** (scroll down) and **`I`
 3. Toggle **Developer mode** on (usually located in the top-right corner).
 4. Click **"Load unpacked"**.
 5. Select the extension folder (the directory containing `manifest.json`).
-6. Pin **ScrollKey** to your browser toolbar for easy access to settings!
+6. Pin **Scrollith** to your browser toolbar for easy access to settings!
 
 ---
 
@@ -74,7 +74,7 @@ ScrollKey lets you glide through web pages using **`U`** (scroll down) and **`I`
 
 ## 🎛️ Extension Settings
 
-Click the **ScrollKey** icon in your browser toolbar to open the settings panel:
+Click the **Scrollith** icon in your browser toolbar to open the settings panel:
 
 - **Master Switch**: Toggle the extension on or off globally.
 - **Scroll Step Slider**: Customize how far the page moves per keypress.
