@@ -388,14 +388,24 @@
       document.body.appendChild(hudElement);
     }
 
-    const arrowSvg = dirText === 'Up' 
-      ? '<svg viewBox="0 0 24 24"><path d="M12 4l-8 8h6v8h4v-8h6z"/></svg>'
-      : '<svg viewBox="0 0 24 24"><path d="M12 20l8-8h-6v-8h-4v8h-6z"/></svg>';
+    // Safely populate HUD without innerHTML
+    hudElement.replaceChildren();
 
-    hudElement.innerHTML = `
-      <span class="scrollith-icon">${arrowSvg}</span>
-      <span>Scroll ${dirText}</span>
-    `;
+    const iconSpan = document.createElement('span');
+    iconSpan.className = 'scrollith-icon';
+
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', dirText === 'Up' ? 'M12 4l-8 8h6v8h4v-8h6z' : 'M12 20l8-8h-6v-8h-4v8h-6z');
+    svg.appendChild(path);
+    iconSpan.appendChild(svg);
+
+    const textSpan = document.createElement('span');
+    textSpan.textContent = `Scroll ${dirText}`;
+
+    hudElement.appendChild(iconSpan);
+    hudElement.appendChild(textSpan);
     hudElement.classList.add('scrollith-visible');
 
     if (hudTimeout) clearTimeout(hudTimeout);

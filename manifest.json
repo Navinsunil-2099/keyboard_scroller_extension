@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Scrollith - 'U' & 'I' Keyboard Scroller & Tab Switcher",
+  "name": "Scrollith - Keyboard Scroller & Tab Switcher",
   "short_name": "Scrollith",
   "version": "1.1.0",
   "description": "Scroll web pages with 'U' (down) & 'I' (up), and switch browser tabs with Alt+U (left) & Alt+I (right).",
@@ -54,7 +54,10 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "scrollith-extension@antigravity.local",
-      "strict_min_version": "109.0"
+      "strict_min_version": "142.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
     }
   }
 }

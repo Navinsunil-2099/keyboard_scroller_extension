@@ -200,35 +200,36 @@
   function renderExcludedSites() {
     const list = currentSettings.excludedSites || [];
     excludedCount.textContent = list.length;
-    excludedTags.innerHTML = '';
+    excludedTags.replaceChildren();
 
     if (list.length === 0) {
-      excludedTags.innerHTML = '<div class="empty-state">No excluded sites</div>';
+      const emptyDiv = document.createElement('div');
+      emptyDiv.className = 'empty-state';
+      emptyDiv.textContent = 'No excluded sites';
+      excludedTags.appendChild(emptyDiv);
       return;
     }
 
     list.forEach(site => {
       const tag = document.createElement('div');
       tag.className = 'site-tag';
-      tag.innerHTML = `
-        <span>${escapeHtml(site)}</span>
-        <span class="tag-remove" data-site="${escapeHtml(site)}" title="Remove">&times;</span>
-      `;
+
+      const label = document.createElement('span');
+      label.textContent = site;
+
+      const removeBtn = document.createElement('span');
+      removeBtn.className = 'tag-remove';
+      removeBtn.setAttribute('data-site', site);
+      removeBtn.setAttribute('title', 'Remove');
+      removeBtn.textContent = '×';
+      removeBtn.addEventListener('click', () => {
+        removeExcludedSite(site);
+      });
+
+      tag.appendChild(label);
+      tag.appendChild(removeBtn);
       excludedTags.appendChild(tag);
     });
-
-    excludedTags.querySelectorAll('.tag-remove').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const siteToRemove = e.target.getAttribute('data-site');
-        removeExcludedSite(siteToRemove);
-      });
-    });
-  }
-
-  function escapeHtml(str) {
-    return str.replace(/[&<>'"]/g, 
-      tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-    );
   }
 
   function addExcludedSite(domain) {
