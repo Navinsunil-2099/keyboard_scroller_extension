@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scrollith - Page Scroller & Tab Switcher Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+
+  <!-- Top Sticky Header Bar -->
+  <header class="app-header">
+    <div class="brand-wrapper">
+      <div class="brand-logo-mark" title="Scrollith Amber Switch">
+        <div class="logo-inner-tile">
+          <!-- Amber Chevrons and Center Dot matching user icon -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M7 8L12 3.5L17 8" stroke="#fe8019" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="12" r="1.5" fill="#fbf1c7"/>
+            <path d="M7 16L12 20.5L17 16" stroke="#fe8019" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-dot-pulse"></span>
+      </div>
+      <div class="brand-text-block">
+        <h1>Scroll<span>ith</span> <span class="badge-version">v1.2.0</span></h1>
+        <div class="brand-subline">TACTILE KEYBOARD SCROLLER & TAB SWITCHER</div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <div class="toast-pill" id="save-toast">
+        <span>✔</span>
+        <span>Settings Saved</span>
+      </div>
+      <div class="master-switch-block">
+        <span class="master-switch-label">MASTER POWER</span>
+        <label class="switch-label" title="Enable or Disable Scrollith globally">
+          <input type="checkbox" id="master-toggle" class="switch-input" checked>
+          <div class="switch-track">
+            <div class="switch-thumb"></div>
+          </div>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Responsive Dashboard Canvas -->
+  <main class="dashboard-container">
+    
+    <!-- System Status Bar -->
+    <div class="dashboard-hero-bar">
+      <div class="hero-status-left">
+        <span class="status-beacon"></span>
+        <span>Dedicated Options Dashboard</span>
+      </div>
+      <div class="hero-status-right">
+        <span class="badge-tag" id="status-tag">ACTIVE & READY</span>
+      </div>
+    </div>
+
+    <!-- 2-Column Responsive Layout -->
+    <div class="dashboard-grid">
+
+      <!-- LEFT COLUMN: Keybindings, Navigation & Dev Key Manager -->
+      <div class="dashboard-column">
+
+        <!-- 1. Page Scroll Keys Card -->
+        <section class="dash-card">
+          <div class="card-header-row">
+            <div class="card-title-group">
+              <svg class="card-icon" style="color: var(--gb-orange);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M8 7l4-4m0 0l4 4m-4-4v18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+              </svg>
+              <h2 class="card-title">PAGE SCROLL KEYS</h2>
+            </div>
+            <button type="button" class="text-btn" id="reset-scroll-keys">Reset (G / H)</button>
+          </div>
+
+          <!-- 3D Keycaps Deck -->
+          <div class="keycap-deck">
+            <!-- Scroll Up Key -->
+            <div class="keycap-slot bordered-right">
+              <div class="keycap-control-row">
+                <button type="button" class="keycap-3d" id="btn-key-up" title="Click to rebind scroll up key">G</button>
+                <div class="key-direction-indicator" title="Direction: Up">▲</div>
+              </div>
+              <span class="key-action-label">Scroll Up</span>
+              <div class="key-sub-hint">
+                <span>Input:</span>
+                <span class="key-sub-badge" id="badge-key-up-input">Alt+G</span>
+              </div>
+            </div>
+
+            <!-- Scroll Down Key -->
+            <div class="keycap-slot">
+              <div class="keycap-control-row">
+                <button type="button" class="keycap-3d" id="btn-key-down" title="Click to rebind scroll down key">H</button>
+                <div class="key-direction-indicator" title="Direction: Down">▼</div>
+              </div>
+              <span class="key-action-label">Scroll Down</span>
+              <div class="key-sub-hint">
+                <span>Input:</span>
+                <span class="key-sub-badge" id="badge-key-down-input">Alt+H</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Tab Navigation Card -->
+        <section class="dash-card">
+          <div class="card-header-row">
+            <div class="card-title-group">
+              <svg class="card-icon" style="color: var(--gb-aqua);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+              </svg>
+              <h2 class="card-title">TAB NAVIGATION</h2>
+            </div>
+            <label class="switch-label" title="Toggle Alt+U & Alt+I Tab Switching">
+              <input type="checkbox" id="tab-switching-toggle" class="switch-input switch-aqua" checked>
+              <div class="switch-track">
+                <div class="switch-thumb"></div>
+              </div>
+            </label>
+          </div>
+
+          <div class="keycap-deck">
+            <!-- Tab Left -->
+            <div class="keycap-slot bordered-right">
+              <div class="keycap-control-row">
+                <div class="keycap-sm">Alt + U</div>
+                <div class="key-direction-indicator aqua" title="Tab Left">◀</div>
+              </div>
+              <span class="key-action-label">Tab Left</span>
+            </div>
+
+            <!-- Tab Right -->
+            <div class="keycap-slot">
+              <div class="keycap-control-row">
+                <div class="keycap-sm">Alt + I</div>
+                <div class="key-direction-indicator aqua" title="Tab Right">▶</div>
+              </div>
+              <span class="key-action-label">Tab Right</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Developer Options & Conflict Prevention Card -->
+        <section class="dash-card">
+          <div class="card-header-row">
+            <div class="card-title-group">
+              <h2 class="card-title">DEVELOPER OPTIONS</h2>
+              <span class="badge-tag" style="color: var(--gb-aqua); border-color: rgba(142,192,124,0.4);">DEV</span>
+            </div>
+            <label class="switch-label" title="Toggle Developer Custom Key Selection Window">
+              <input type="checkbox" id="dev-toggle" class="switch-input switch-blue">
+              <div class="switch-track">
+                <div class="switch-thumb"></div>
+              </div>
+            </label>
+          </div>
+          <p style="font-size: 12px; color: var(--gb-muted); line-height: 1.4;">
+            Activate custom single-key manager with built-in conflict prevention and live browser safety analysis.
+          </p>
+
+          <!-- Developer Window Section -->
+          <div class="dev-window-box" id="dev-window" style="display: none;">
+            <div class="dev-banner">
+              <span class="dev-banner-title">⚡ Custom Key Selection Window</span>
+              <span class="conflict-pill safe" id="conflict-status-pill">Safe Keys</span>
+            </div>
+
+            <!-- Recommended Presets -->
+            <div>
+              <div style="font-size: 11px; font-weight: 600; color: var(--gb-fg2); margin-bottom: 8px;">Quick Presets:</div>
+              <div class="preset-pill-grid">
+                <button type="button" class="preset-pill active" id="preset-gh" data-up="g" data-down="h">
+                  <span>G / H</span>
+                  <span class="preset-badge">Default</span>
+                </button>
+                <button type="button" class="preset-pill" id="preset-iu" data-up="i" data-down="u">
+                  <span>I / U</span>
+                  <span class="preset-badge">Classic</span>
+                </button>
+                <button type="button" class="preset-pill" id="preset-kj" data-up="k" data-down="j">
+                  <span>K / J</span>
+                  <span class="preset-badge caution">Vim</span>
+                </button>
+                <button type="button" class="preset-pill" id="preset-brackets" data-up="[" data-down="]">
+                  <span>[ / ]</span>
+                  <span class="preset-badge">Brackets</span>
+                </button>
+                <button type="button" class="preset-pill" id="preset-mn" data-up="m" data-down="n">
+                  <span>M / N</span>
+                  <span class="preset-badge">Bottom</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Curated Select Dropdowns -->
+            <div class="dev-selects-grid">
+              <div class="dev-select-box">
+                <div class="dev-select-header">
+                  <span>Scroll Up Key</span>
+                  <span id="preview-key-up" style="color: var(--gb-yellow); font-family: monospace; font-weight: bold;">G</span>
+                </div>
+                <select id="select-key-up" class="dev-select-dropdown"></select>
+                <div class="dev-hint" id="hint-up">In typing boxes: <b>Alt + G</b></div>
+              </div>
+
+              <div class="dev-select-box">
+                <div class="dev-select-header">
+                  <span>Scroll Down Key</span>
+                  <span id="preview-key-down" style="color: var(--gb-orange); font-family: monospace; font-weight: bold;">H</span>
+                </div>
+                <select id="select-key-down" class="dev-select-dropdown"></select>
+                <div class="dev-hint" id="hint-down">In typing boxes: <b>Alt + H</b></div>
+              </div>
+            </div>
+
+            <!-- Conflict Analysis Card -->
+            <div class="conflict-card" id="conflict-card">
+              <div class="conflict-card-header">
+                <span id="conflict-card-icon">✅</span>
+                <span id="conflict-card-title">Optimal & Conflict-Free</span>
+              </div>
+              <div class="conflict-card-body" id="conflict-card-body">
+                G and H are safe single keys with zero browser or popular web application conflicts.
+              </div>
+            </div>
+
+            <!-- Single Keys Click Palette -->
+            <div>
+              <div style="font-size: 11px; font-weight: 600; color: var(--gb-fg2); margin-bottom: 8px;">Curated Single Keys (Click to set):</div>
+              <div class="key-palette" id="dev-key-palette"></div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- RIGHT COLUMN: Physics Tuning, Interactive Test Pad & Excluded Sites -->
+      <div class="dashboard-column">
+
+        <!-- 4. Scroll Tuning Card -->
+        <section class="dash-card">
+          <div class="card-header-row">
+            <div class="card-title-group">
+              <svg class="card-icon" style="color: var(--gb-yellow);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+              </svg>
+              <h2 class="card-title">SCROLL TUNING</h2>
+            </div>
+          </div>
+
+          <!-- Step Size Range Slider -->
+          <div class="slider-box">
+            <div class="slider-meta-row">
+              <div>
+                <div class="slider-label-title">Scroll Step</div>
+                <div class="slider-label-desc">Distance per keypress</div>
+              </div>
+              <span class="slider-pill-value" id="scroll-step-val">120 px</span>
+            </div>
+            <input type="range" id="scroll-step-slider" min="40" max="300" step="10" value="120">
+          </div>
+
+          <!-- 4 Tuning Switches -->
+          <div class="tuning-toggles-list">
+            <!-- Smooth Motion -->
+            <div class="toggle-item-row">
+              <div class="toggle-item-text">
+                <span class="title">Smooth Motion</span>
+                <span class="desc">Interpolated buttery kinetic scrolling</span>
+              </div>
+              <label class="switch-label">
+                <input type="checkbox" id="smooth-scroll-toggle" class="switch-input" checked>
+                <div class="switch-track"><div class="switch-thumb"></div></div>
+              </label>
+            </div>
+
+            <!-- Shift Key Boost -->
+            <div class="toggle-item-row">
+              <div class="toggle-item-text">
+                <span class="title">Shift Key Boost</span>
+                <span class="desc">Hold Shift for 2.5x fast turbo scroll</span>
+              </div>
+              <label class="switch-label">
+                <input type="checkbox" id="shift-boost-toggle" class="switch-input" checked>
+                <div class="switch-track"><div class="switch-thumb"></div></div>
+              </label>
+            </div>
+
+            <!-- Hover Targeting -->
+            <div class="toggle-item-row">
+              <div class="toggle-item-text">
+                <span class="title">Hover Targeting</span>
+                <span class="desc">Scroll inner panels and code blocks under mouse</span>
+              </div>
+              <label class="switch-label">
+                <input type="checkbox" id="hover-targeting-toggle" class="switch-input" checked>
+                <div class="switch-track"><div class="switch-thumb"></div></div>
+              </label>
+            </div>
+
+            <!-- On-Screen HUD -->
+            <div class="toggle-item-row">
+              <div class="toggle-item-text">
+                <span class="title">On-Screen HUD</span>
+                <span class="desc">Show subtle direction indicator feedback</span>
+              </div>
+              <label class="switch-label">
+                <input type="checkbox" id="show-hud-toggle" class="switch-input">
+                <div class="switch-track"><div class="switch-thumb"></div></div>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. Interactive Test Pad Card (Direct display, zero inner scrolling) -->
+        <section class="dash-card">
+          <div class="card-header-row">
+            <div class="card-title-group">
+              <svg class="card-icon" style="color: var(--gb-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+              </svg>
+              <h2 class="card-title">INTERACTIVE TEST PAD</h2>
+            </div>
+            <span class="badge-tag" style="color: var(--gb-purple); border-color: rgba(211,134,155,0.4);" id="test-pill-hint">Press G & H</span>
+          </div>
+
+          <!-- Typing Input Box with Alt modifier detection -->
+          <div class="test-input-wrapper">
+            <input type="text" id="interactive-test-input" class="test-input" placeholder="Type here: G/H types letters, Alt+G/H triggers scroll!">
+            <span class="test-badge-pill" id="test-feedback-pill" style="display: none;">ALT+G</span>
+          </div>
+          <p style="font-size: 11px; color: var(--gb-muted); margin-bottom: 14px; line-height: 1.4;">
+            Click above: type letters normally, press <span style="color: var(--gb-yellow); font-family: monospace; font-weight: bold;">Alt+G</span> / <span style="color: var(--gb-yellow); font-family: monospace; font-weight: bold;">Alt+H</span> to test input-safe scrolling.
+          </p>
+
+          <!-- Safeguards list shown directly (no inner scrollbox) -->
+          <div class="safeguards-list">
+            <div class="safeguard-badge">
+              <span class="check">✔</span>
+              <span>Input & textarea fields are safe from single-key hijacking</span>
+            </div>
+            <div class="safeguard-badge">
+              <span class="check">✔</span>
+              <span>Press <b id="hint-down-key" style="color: var(--gb-orange); font-family: monospace;">H</b> to scroll smoothly down</span>
+            </div>
+            <div class="safeguard-badge">
+              <span class="check">✔</span>
+              <span>Press <b id="hint-up-key" style="color: var(--gb-orange); font-family: monospace;">G</b> to scroll smoothly up</span>
+            </div>
+            <div class="safeguard-badge">
+              <span class="check">✔</span>
+              <span>Hold <b id="hint-turbo-key" style="color: var(--gb-yellow); font-family: monospace;">Shift + H</b> for turbo 2.5x fast scroll</span>
+            </div>
+            <div class="safeguard-badge">
+              <span class="check">✔</span>
+              <span>Press <b style="color: var(--gb-aqua); font-family: monospace;">Alt + U</b> & <b style="color: var(--gb-aqua); font-family: monospace;">Alt + I</b> to switch tabs</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. Excluded Sites Card -->
+        <section class="dash-card">
+          <div class="card-header-row">
+            <div class="card-title-group">
+              <svg class="card-icon" style="color: var(--gb-gray);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+              </svg>
+              <h2 class="card-title">EXCLUDED SITES (<span id="excluded-count">0</span>)</h2>
+            </div>
+          </div>
+          <p style="font-size: 11px; color: var(--gb-muted); margin-bottom: 10px;">
+            Domains where Scrollith key listeners and scrolling are automatically bypassed.
+          </p>
+
+          <div class="excluded-row">
+            <input type="text" id="excluded-domain-input" class="excluded-input" placeholder="e.g. docs.google.com, github.com">
+            <button type="button" class="btn-primary" id="btn-add-domain">Add</button>
+          </div>
+
+          <div class="domain-tags-container" id="excluded-domains-list">
+            <span class="empty-state-text">No excluded domains configured.</span>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Key Recording Modal -->
+  <div class="modal-backdrop" id="key-modal" style="display: none;">
+    <div class="modal-content">
+      <h3>Press Any Key</h3>
+      <p>Press the key you want to assign to <b id="modal-action-name" style="color: var(--gb-orange);">Scroll Down</b></p>
+      <div class="modal-key-display" id="modal-key-display">Waiting for keypress...</div>
+      <button type="button" class="btn-primary" id="modal-cancel-btn">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Footer Quick Bar -->
+  <footer class="app-footer">
+    <div>
+      <span style="color: var(--gb-aqua); font-weight: bold;">&lt; / &gt;</span>
+      <span>Safe Typing Protection Active</span>
+    </div>
+    <div>
+      <span>Scrollith Mechanical Scroller</span> · <span style="color: var(--gb-yellow); font-weight: bold;">v1.2.0</span>
+    </div>
+  </footer>
+
+  <script src="options.js"></script>
+</body>
+</html>

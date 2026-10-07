@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,219 +7,113 @@
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <div class="popup-container">
-    <!-- Header -->
-    <header class="header">
-      <div class="header-brand">
-        <div class="brand-logo">
-          <svg viewBox="0 0 128 128" width="26" height="26">
-            <rect width="128" height="128" rx="28" fill="url(#pGrad)" />
-            <path d="M64 26 L78 42 H50 Z" fill="#FFF" />
-            <path d="M64 102 L50 86 H78 Z" fill="#FFF" />
-            <defs>
-              <linearGradient id="pGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#6366F1" />
-                <stop offset="100%" stop-color="#06B6D4" />
-              </linearGradient>
-            </defs>
+
+  <!-- Minimal Header -->
+  <header class="popup-header">
+    <div class="brand-row">
+      <div class="brand-icon-box">
+        <div class="brand-icon-inner">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M7 8L12 3.5L17 8" stroke="#fe8019" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="12" r="1.5" fill="#fbf1c7"/>
+            <path d="M7 16L12 20.5L17 16" stroke="#fe8019" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
-        <div>
-          <h1 class="brand-title">Scrollith</h1>
-          <div class="brand-subtitle">Page Scroller & Tab Switcher</div>
-        </div>
       </div>
-      
-      <!-- Master Toggle Switch -->
-      <label class="toggle-switch" title="Toggle Extension On/Off">
-        <input type="checkbox" id="master-toggle" checked>
-        <span class="slider"></span>
+      <div>
+        <div class="brand-title">Scroll<span>ith</span> <span class="brand-ver">v1.2.0</span></div>
+        <div class="brand-subtitle">FAST SCROLLER</div>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      <!-- Settings Icon Button (More Settings) -->
+      <button type="button" class="settings-gear-btn" id="open-settings-icon-btn" title="More Settings (Open Full Dashboard)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
+
+      <!-- Master Power Switch -->
+      <label class="switch-label" title="Master Toggle On/Off">
+        <input type="checkbox" id="master-toggle" class="switch-input" checked>
+        <div class="switch-track">
+          <div class="switch-thumb"></div>
+        </div>
       </label>
-    </header>
-
-    <!-- Site Quick Action Banner -->
-    <div class="site-banner" id="site-banner">
-      <div class="site-info">
-        <span class="status-indicator active" id="site-status-dot"></span>
-        <span class="site-domain" id="current-domain">Detecting page...</span>
-      </div>
-      <button class="site-toggle-btn" id="site-toggle-btn">Exclude Site</button>
     </div>
+  </header>
 
-    <!-- Scroll Key Controls Card -->
-    <div class="card keymap-card">
-      <div class="card-header">
-        <span class="card-title">Page Scroll Keys</span>
-        <button class="text-btn" id="reset-keys-btn">Reset (I / U)</button>
-      </div>
-      <div class="key-grid">
-        <div class="key-item">
-          <div class="key-badge-container">
-            <button class="keycap" id="key-up-btn" title="Click to change key">I</button>
-            <span class="key-arrow">▲</span>
-          </div>
-          <div class="key-label">Scroll Up</div>
-        </div>
-        <div class="key-divider"></div>
-        <div class="key-item">
-          <div class="key-badge-container">
-            <button class="keycap" id="key-down-btn" title="Click to change key">U</button>
-            <span class="key-arrow">▼</span>
-          </div>
-          <div class="key-label">Scroll Down</div>
-        </div>
-      </div>
+  <!-- Current Site Banner -->
+  <div class="site-bar" id="site-banner">
+    <div class="site-bar-left">
+      <span class="status-dot" id="site-status-dot"></span>
+      <span class="site-domain-text" id="current-domain">Detecting tab...</span>
     </div>
-
-    <!-- Tab Navigation Card (Alt+U & Alt+I) -->
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title">Tab Navigation</span>
-        <label class="toggle-switch small" title="Toggle Alt+U / Alt+I Tab Switching">
-          <input type="checkbox" id="tab-switching" checked>
-          <span class="slider"></span>
-        </label>
-      </div>
-      <div class="key-grid">
-        <div class="key-item">
-          <div class="key-badge-container">
-            <span class="keycap combo-key">Alt + U</span>
-            <span class="key-arrow">◀</span>
-          </div>
-          <div class="key-label">Tab Left</div>
-        </div>
-        <div class="key-divider"></div>
-        <div class="key-item">
-          <div class="key-badge-container">
-            <span class="keycap combo-key">Alt + I</span>
-            <span class="key-arrow">▶</span>
-          </div>
-          <div class="key-label">Tab Right</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Scroll Tuning Controls -->
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title">Scroll Tuning</span>
-      </div>
-
-      <!-- Step Size Slider -->
-      <div class="setting-row slider-row">
-        <div class="setting-text">
-          <span class="setting-label">Scroll Step</span>
-          <span class="setting-desc">Distance per keypress</span>
-        </div>
-        <div class="slider-control">
-          <input type="range" id="step-size" min="40" max="300" step="10" value="120">
-          <span class="slider-val" id="step-size-val">120 px</span>
-        </div>
-      </div>
-
-      <!-- Smooth Scroll -->
-      <div class="setting-row">
-        <div class="setting-text">
-          <span class="setting-label">Smooth Motion</span>
-          <span class="setting-desc">Interpolated buttery scrolling</span>
-        </div>
-        <label class="toggle-switch small">
-          <input type="checkbox" id="smooth-scroll" checked>
-          <span class="slider"></span>
-        </label>
-      </div>
-
-      <!-- Shift Key Boost -->
-      <div class="setting-row">
-        <div class="setting-text">
-          <span class="setting-label">Shift Key Boost</span>
-          <span class="setting-desc">Hold Shift for 2.5x fast scroll</span>
-        </div>
-        <label class="toggle-switch small">
-          <input type="checkbox" id="shift-boost" checked>
-          <span class="slider"></span>
-        </label>
-      </div>
-
-      <!-- Smart Mouse Hover -->
-      <div class="setting-row">
-        <div class="setting-text">
-          <span class="setting-label">Hover Targeting</span>
-          <span class="setting-desc">Scroll inner panels under mouse</span>
-        </div>
-        <label class="toggle-switch small">
-          <input type="checkbox" id="hover-targeting" checked>
-          <span class="slider"></span>
-        </label>
-      </div>
-
-      <!-- Visual HUD -->
-      <div class="setting-row">
-        <div class="setting-text">
-          <span class="setting-label">On-Screen HUD</span>
-          <span class="setting-desc">Show subtle arrow feedback</span>
-        </div>
-        <label class="toggle-switch small">
-          <input type="checkbox" id="show-hud">
-          <span class="slider"></span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Interactive Test Playground -->
-    <div class="card test-card">
-      <div class="card-header">
-        <span class="card-title">Interactive Test Pad</span>
-        <span class="badge-tip">Press I & U</span>
-      </div>
-      <div class="test-scrollbox" id="test-scrollbox" tabindex="0">
-        <div class="test-content">
-          <div class="test-item start">✨ Top of test area</div>
-          <div class="test-item">Press <b>U</b> to scroll down</div>
-          <div class="test-item">Press <b>Alt + U</b> to switch to Left Tab</div>
-          <div class="test-item">Press <b>Alt + I</b> to switch to Right Tab</div>
-          <div class="test-item">Holding <b>U</b> scrolls continuously</div>
-          <div class="test-item">Hold <b>Shift + U</b> for turbo boost!</div>
-          <div class="test-item">Press <b>I</b> to scroll back up</div>
-          <div class="test-item">Input fields are automatically protected</div>
-          <div class="test-item end">🏁 Bottom reached! Press <b>I</b> to go up</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Excluded Sites Section -->
-    <div class="card" id="excluded-section">
-      <div class="card-header collapsible" id="excluded-toggle">
-        <span class="card-title">Excluded Sites (<span id="excluded-count">0</span>)</span>
-        <span class="chevron" id="excluded-chevron">▼</span>
-      </div>
-      <div class="excluded-body collapsed" id="excluded-body">
-        <div class="excluded-input-row">
-          <input type="text" id="add-excluded-input" placeholder="e.g. docs.google.com">
-          <button id="add-excluded-btn" class="action-btn">Add</button>
-        </div>
-        <div class="tags-container" id="excluded-tags">
-          <div class="empty-state">No excluded sites</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-      <span class="footer-status">Safe Typing Protection Active</span>
-      <span class="footer-version">v1.1.0</span>
-    </footer>
+    <button type="button" class="site-action-btn" id="site-toggle-btn">Exclude Site</button>
   </div>
 
-  <!-- Key Recording Modal -->
-  <div class="modal-backdrop" id="key-modal" style="display: none;">
-    <div class="modal-content">
-      <h3>Press Any Key</h3>
-      <p>Press the key you want to assign to <b id="modal-action-name">Scroll Down</b></p>
-      <div class="modal-key-display" id="modal-key-display">Waiting...</div>
-      <button class="action-btn secondary" id="modal-cancel-btn">Cancel</button>
+  <!-- Quick Key Status Summary -->
+  <div class="quick-deck">
+    <!-- Scroll Keys Summary -->
+    <div class="quick-card">
+      <div class="quick-card-title">
+        <span>Scroll Keys</span>
+        <span class="key-arrow-tag">▲▼</span>
+      </div>
+      <div class="quick-keys-row">
+        <span class="keycap-mini" id="mini-key-up">G</span>
+        <span class="keycap-mini" id="mini-key-down">H</span>
+      </div>
+      <div class="quick-subtext">Typing: Alt+G / Alt+H</div>
+    </div>
+
+    <!-- Tab Switching Summary -->
+    <div class="quick-card">
+      <div class="quick-card-title">
+        <span>Tabs (Alt+U/I)</span>
+        <span class="key-arrow-tag aqua">◀▶</span>
+      </div>
+      <div class="quick-keys-row">
+        <span class="keycap-mini combo">Alt+U</span>
+        <span class="keycap-mini combo">Alt+I</span>
+      </div>
+      <div class="quick-subtext">Switch Left / Right</div>
     </div>
   </div>
+
+  <!-- Quick Scroll Step Slider -->
+  <div class="slider-container">
+    <div class="slider-header">
+      <span class="slider-label">Scroll Distance</span>
+      <span class="slider-badge" id="step-size-val">120 px</span>
+    </div>
+    <input type="range" id="step-size" min="40" max="300" step="10" value="120">
+  </div>
+
+  <!-- Prominent "More Settings" Action Button -->
+  <button type="button" class="more-settings-card-btn" id="open-options-card-btn">
+    <div class="more-settings-left">
+      <div class="gear-icon-badge">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </div>
+      <div>
+        <div class="more-settings-title">More Settings & Detailed Options ⚙</div>
+        <div class="more-settings-sub">Key rebinding, dev conflict manager & sandbox</div>
+      </div>
+    </div>
+    <span class="arrow-external">↗</span>
+  </button>
+
+  <!-- Minimal Footer -->
+  <footer class="popup-footer">
+    <span>Safe typing protection</span>
+    <span style="color: var(--gb-fg2);">Tactile Gruvbox</span>
+  </footer>
 
   <script src="popup.js"></script>
 </body>

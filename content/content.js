@@ -10,8 +10,8 @@
   // Default configuration
   const DEFAULT_SETTINGS = {
     enabled: true,
-    keyDown: 'u',
-    keyUp: 'i',
+    keyDown: 'h',
+    keyUp: 'g',
     stepSize: 120,
     smoothScroll: true,
     shiftBoost: true,
@@ -19,6 +19,7 @@
     hoverTargeting: true,
     showHud: false,
     tabSwitching: true,
+    devMode: false,
     excludedSites: []
   };
 
@@ -96,10 +97,15 @@
   }
 
   // Track mouse coordinates for hover targeting
-  window.addEventListener('mousemove', (e) => {
-    lastMousePosition.x = e.clientX;
-    lastMousePosition.y = e.clientY;
-  }, { passive: true, capture: true });
+  function updateMouseCoords(e) {
+    if (e && typeof e.clientX === 'number') {
+      lastMousePosition.x = e.clientX;
+      lastMousePosition.y = e.clientY;
+    }
+  }
+  window.addEventListener('mousemove', updateMouseCoords, { passive: true, capture: true });
+  window.addEventListener('mousedown', updateMouseCoords, { passive: true, capture: true });
+  window.addEventListener('pointerdown', updateMouseCoords, { passive: true, capture: true });
 
   // Reset physics if user interrupts with real mouse wheel / touch
   window.addEventListener('wheel', () => {
@@ -197,41 +203,145 @@
   }
 
   /**
-   * Check if a given element can be scrolled vertically
+   * Check if a given element is a scrollable container with vertical overflow
    */
-  function isScrollable(element, direction) {
-    if (!element || element === document.body || element === document.documentElement) {
+  function isScrollContainer(element) {
+    if (!element || !(element instanceof HTMLElement)) return false;
+    if (element === document.body || element === document.documentElement) return false;
+
+    // Avoid tiny widgets, buttons, tooltips
+    if (element.clientHeight < 40 || element.clientWidth < 80) return false;
+
+    // Avoid small 1-line or 2-line input boxes
+    if (isEditableElement(element) && element.clientHeight < 250) return false;
+
+    try {
+      const style = window.getComputedStyle(element);
+      const overflowY = style.overflowY;
+      const isScrollType = overflowY === 'auto' || overflowY === 'scroll' || overflowY === 'overlay';
+      if (!isScrollType) return false;
+
+      return element.scrollHeight > (element.clientHeight + 4);
+    } catch {
       return false;
-    }
-
-    const style = window.getComputedStyle(element);
-    const overflowY = style.overflowY;
-    const isScrollableType = overflowY === 'auto' || overflowY === 'scroll' || overflowY === 'overlay';
-    if (!isScrollableType) return false;
-
-    const hasScrollRange = element.scrollHeight > (element.clientHeight + 2);
-    if (!hasScrollRange) return false;
-
-    if (direction < 0) {
-      return element.scrollTop > 0;
-    } else {
-      return element.scrollTop + element.clientHeight < element.scrollHeight - 1;
     }
   }
 
   /**
-   * Find the most relevant scroll target (hovered element container or document root)
+   * Check if the document window itself has scrollable content
+   */
+  function canWindowScroll() {
+    const doc = document.scrollingElement || document.documentElement || document.body;
+    if (!doc) return false;
+    return doc.scrollHeight > (window.innerHeight + 10);
+  }
+
+  /**
+   * Find the most relevant scroll target with SPA (ChatGPT, Claude, Notion) awareness.
    */
   function getScrollTarget(direction) {
+    // 1. Mouse hover targeting: if mouse is over an explicit scrollable container
     if (settings.hoverTargeting && lastMousePosition.x >= 0 && lastMousePosition.y >= 0) {
       let hovered = document.elementFromPoint(lastMousePosition.x, lastMousePosition.y);
       let curr = hovered;
       while (curr && curr !== document.documentElement && curr !== document.body) {
-        if (isScrollable(curr, direction)) {
+        if (isScrollContainer(curr)) {
           return curr;
         }
         curr = curr.parentElement;
       }
+    }
+
+    // 2. Focused Input / SPA targeting (ChatGPT, Claude, Notion, etc.):
+    // When focused in an input box or when the main window does not scroll,
+    // find the primary conversation/content container!
+    const active = document.activeElement;
+    if (active && (isEditableElement(active) || !canWindowScroll())) {
+      // A. Check ancestors of active element
+      let ancestor = active.parentElement;
+      while (ancestor && ancestor !== document.documentElement && ancestor !== document.body) {
+        if (isScrollContainer(ancestor) && ancestor.clientHeight > 200) {
+          return ancestor;
+        }
+        ancestor = ancestor.parentElement;
+      }
+
+      // B. Search within the active section (closest main or body)
+      const mainContext = active.closest('main, [role="main"], #__next, body') || document.body;
+      const candidates = mainContext.querySelectorAll('div, section, article, main');
+      let bestCandidate = null;
+      let bestScore = -1;
+
+      for (const el of candidates) {
+        if (isScrollContainer(el)) {
+          const rect = el.getBoundingClientRect();
+          if (rect.width > 180 && rect.height > 150) {
+            let score = rect.width * rect.height;
+
+            // Prioritize main conversation area
+            if (el.tagName === 'MAIN' || el.getAttribute('role') === 'main' || el.closest('main')) {
+              score *= 3;
+            }
+
+            const className = (typeof el.className === 'string') ? el.className.toLowerCase() : '';
+            if (className.includes('conversation') || className.includes('scroll') || className.includes('overflow-y-auto')) {
+              score *= 2;
+            }
+
+            // Slight preference for containers that have room to move in direction
+            if (direction < 0 && el.scrollTop > 2) {
+              score *= 1.3;
+            } else if (direction > 0 && el.scrollTop + el.clientHeight < el.scrollHeight - 4) {
+              score *= 1.3;
+            }
+
+            if (score > bestScore) {
+              bestScore = score;
+              bestCandidate = el;
+            }
+          }
+        }
+      }
+
+      if (bestCandidate) {
+        return bestCandidate;
+      }
+    }
+
+    // 3. Document window if scrollable (standard multi-page websites)
+    if (canWindowScroll()) {
+      return document.scrollingElement || document.documentElement || document.body || window;
+    }
+
+    // 4. Global fallback for SPAs: find largest visible scroll container
+    const globalCandidates = document.querySelectorAll('main, [role="main"], div, section, article');
+    let bestGlobal = null;
+    let bestGlobalScore = -1;
+
+    for (const el of globalCandidates) {
+      if (isScrollContainer(el)) {
+        const rect = el.getBoundingClientRect();
+        if (rect.width > 180 && rect.height > 150) {
+          let score = rect.width * rect.height;
+          if (el.tagName === 'MAIN' || el.getAttribute('role') === 'main' || el.closest('main')) {
+            score *= 2;
+          }
+          if (direction < 0 && el.scrollTop > 2) {
+            score *= 1.2;
+          } else if (direction > 0 && el.scrollTop + el.clientHeight < el.scrollHeight - 4) {
+            score *= 1.2;
+          }
+
+          if (score > bestGlobalScore) {
+            bestGlobalScore = score;
+            bestGlobal = el;
+          }
+        }
+      }
+    }
+
+    if (bestGlobal) {
+      return bestGlobal;
     }
 
     return document.scrollingElement || document.documentElement || document.body || window;
@@ -323,19 +433,37 @@
 
   function applyScrollDelta(target, delta) {
     if (target === window || target === document.documentElement || target === document.body || target === document.scrollingElement) {
-      window.scrollBy({
-        top: delta,
-        left: 0,
-        behavior: 'instant' // Driven continuously by rAF
-      });
-    } else if (typeof target.scrollBy === 'function') {
-      target.scrollBy({
-        top: delta,
-        left: 0,
-        behavior: 'instant'
-      });
-    } else {
-      target.scrollTop += delta;
+      const root = document.scrollingElement || document.documentElement || document.body;
+      if (typeof window.scrollBy === 'function') {
+        window.scrollBy({
+          top: delta,
+          left: 0,
+          behavior: 'instant' // Driven continuously by rAF
+        });
+      } else if (root) {
+        root.scrollTop += delta;
+      }
+    } else if (target instanceof HTMLElement) {
+      const initialTop = target.scrollTop;
+
+      if (typeof target.scrollBy === 'function') {
+        try {
+          target.scrollBy({
+            top: delta,
+            left: 0,
+            behavior: 'instant'
+          });
+        } catch {
+          target.scrollTop += delta;
+        }
+      } else {
+        target.scrollTop += delta;
+      }
+
+      // Enforce direct modification if CSS smooth-scroll or layout engine ignored scrollBy
+      if (Math.abs(target.scrollTop - initialTop) < 0.1) {
+        target.scrollTop = initialTop + delta;
+      }
     }
   }
 
@@ -415,18 +543,57 @@
   }
 
   /**
+   * Universal key matching (resilient against Linux Alt-layer symbols, dead keys, and layout overrides)
+   */
+  function matchesKey(event, targetChar) {
+    if (!targetChar || !event) return false;
+    const t = targetChar.toLowerCase();
+    const k = (event.key || '').toLowerCase();
+    if (k === t) return true;
+
+    // Physical key code check (e.g. 'KeyG' for 'g')
+    if (t.length === 1 && t >= 'a' && t <= 'z') {
+      if (event.code === `Key${t.toUpperCase()}`) return true;
+      const expectedCode = t.toUpperCase().charCodeAt(0);
+      if (event.keyCode === expectedCode || event.which === expectedCode) return true;
+    }
+
+    // Common symbol mappings
+    const codeMap = {
+      '[': 'BracketLeft',
+      ']': 'BracketRight',
+      ',': 'Comma',
+      '.': 'Period',
+      ';': 'Semicolon',
+      '/': 'Slash',
+      '-': 'Minus',
+      '=': 'Equal'
+    };
+    if (codeMap[t] && event.code === codeMap[t]) return true;
+
+    return false;
+  }
+
+  /**
    * Main Keydown Listener
    */
   function handleKeyDown(event) {
     if (!settings.enabled) return;
 
-    // FEATURE: Alt + U (Left Tab) and Alt + I (Right Tab)
+    const keyUp = (settings.keyUp || 'g').toLowerCase();
+    const keyDown = (settings.keyDown || 'h').toLowerCase();
+
+    const isUp = matchesKey(event, keyUp) || matchesKey(event, 'g');
+    const isDown = matchesKey(event, keyDown) || matchesKey(event, 'h');
+    const isTabLeft = matchesKey(event, 'u');
+    const isTabRight = matchesKey(event, 'i');
+
+    // 1. FEATURE: Alt + U (Left Tab) and Alt + I (Right Tab)
     if (settings.tabSwitching && event.altKey && !event.ctrlKey && !event.metaKey) {
-      const pressed = event.key.toLowerCase();
-      if (pressed === 'u' || pressed === 'i') {
+      if (isTabLeft || isTabRight) {
         event.preventDefault();
         event.stopPropagation();
-        const direction = (pressed === 'u') ? 'left' : 'right';
+        const direction = isTabLeft ? 'left' : 'right';
         try {
           if (extensionRuntime && extensionRuntime.sendMessage) {
             extensionRuntime.sendMessage({ action: 'switchTab', direction });
@@ -438,30 +605,59 @@
       }
     }
 
-    // Modifiers check: Ctrl, Alt, Meta/Cmd should NEVER be intercepted for page scrolling
-    if (event.ctrlKey || event.altKey || event.metaKey) {
-      return;
-    }
-
     // Excluded sites check
     if (isCurrentSiteExcluded()) {
       return;
     }
 
-    const pressedKey = event.key.toLowerCase();
-    const keyUp = (settings.keyUp || 'i').toLowerCase();
-    const keyDown = (settings.keyDown || 'u').toLowerCase();
+    // 2. FEATURE: Alt + G (Up) and Alt + H (Down) Scrolling
+    // Solves the problem where single keys cannot be used when typing in input boxes or editors.
+    // Alt + G / Alt + H scrolls smoothly even when inside an active input field, textarea, or contenteditable!
+    if (event.altKey && !event.ctrlKey && !event.metaKey) {
+      let altDirection = 0;
+      if (isDown) {
+        altDirection = 1; // Down
+      } else if (isUp) {
+        altDirection = -1; // Up
+      }
 
+      if (altDirection !== 0) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (!settings.smoothScroll) {
+          const multiplier = (settings.shiftBoost && event.shiftKey) ? (settings.shiftMultiplier || 2.5) : 1;
+          const target = getScrollTarget(altDirection);
+          applyScrollDelta(target, altDirection * (settings.stepSize || 120) * multiplier);
+          return;
+        }
+
+        // Trigger kinetic physics
+        startScroll(altDirection, event.shiftKey, event.repeat);
+        return;
+      }
+
+      // Other Alt combos are ignored so system hotkeys continue working
+      return;
+    }
+
+    // Modifiers check: Ctrl, Alt, Meta/Cmd should NEVER be intercepted for regular page scrolling
+    if (event.ctrlKey || event.altKey || event.metaKey) {
+      return;
+    }
+
+    // 3. Single-Key Scrolling (G for Up, H for Down)
     let direction = 0;
-    if (pressedKey === keyDown) {
+    if (isDown) {
       direction = 1; // Down
-    } else if (pressedKey === keyUp) {
+    } else if (isUp) {
       direction = -1; // Up
     } else {
       return;
     }
 
-    // Safe typing check: Never intercept while typing in form inputs or editors
+    // Safe typing check: Never intercept single keys while typing in form inputs, textareas, or editors!
+    // (In typing boxes, use Alt+G or Alt+H to scroll instead)
     if (isEditableElement(event.target, event)) {
       return;
     }
@@ -485,18 +681,20 @@
    * Keyup Listener to begin smooth momentum coasting
    */
   function handleKeyUp(event) {
-    const pressedKey = event.key.toLowerCase();
-    const keyUp = (settings.keyUp || 'i').toLowerCase();
-    const keyDown = (settings.keyDown || 'u').toLowerCase();
+    const keyUp = (settings.keyUp || 'g').toLowerCase();
+    const keyDown = (settings.keyDown || 'h').toLowerCase();
 
-    if (pressedKey === keyDown || pressedKey === keyUp) {
+    const isUp = matchesKey(event, keyUp) || matchesKey(event, 'g');
+    const isDown = matchesKey(event, keyDown) || matchesKey(event, 'h');
+
+    if (isDown || isUp || event.key === 'Alt' || event.code === 'AltLeft' || event.code === 'AltRight') {
       // Release hold; physics loop will smoothly coast to a halt
       isHoldingKey = false;
     }
   }
 
   window.addEventListener('keydown', handleKeyDown, { capture: true, passive: false });
-  window.addEventListener('keyup', handleKeyUp, { capture: true, passive: true });
+  window.addEventListener('keyup', handleKeyUp, { capture: true, passive: false });
 
   loadSettings();
 })();
